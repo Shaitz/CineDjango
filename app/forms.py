@@ -30,3 +30,7 @@ class PeliculaForm(forms.ModelForm):
 
 class TitulosForm(forms.Form):
 	titulos = forms.ModelChoiceField(queryset = Pelicula.objects.all())
+
+class GenerosForm(forms.Form):
+    generos = forms.ModelChoiceField(queryset = Pelicula.objects.all())
+    #generos = forms.ModelChoiceField(queryset = Pelicula.objects.values_list('genero', flat=True).distinct())

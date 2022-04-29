@@ -20,6 +20,7 @@ from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpRequest
 from app.forms import TitulosForm
+from app.forms import GenerosForm
 
 def home(request):
     """Renders the home page."""
@@ -120,7 +121,22 @@ def peliculas(request):
 		return render(request, 'app/peliculas.html', {'pelis': pelis})
 
 def generos(request):
-    return render(request, 'app/genero.html')
+    if not request.user.is_authenticated:
+        return render(request, 'app/index.html')
+
+    if request.method == "GET":
+        form = GenerosForm()
+        return render(request, 'app/genero.html',{'form': form})
+
+    if request.method == "POST":
+        form = GenerosForm(request.POST)  
+
+        if form.is_valid():
+            genre = form.cleaned_data['generos']
+            pelis = Pelicula.objects.get(genero=genre).order_by('-votos')
+            return render(request, 'app/genero.html',{'form': form}, {'pelis':pelis})
+
+        return render(request, 'app/genero.html',{'form': form})
     
 def voto(request):
     if not request.user.is_authenticated:
@@ -161,8 +177,7 @@ def voto(request):
                 voted = True
                 return render(request, 'app/voto.html', {'form': form, 'votado': selectedFilm.titulo, 'votadoB': voted})
                
-
-    return render(request, 'app/voto.html')
+    return render(request, 'app/voto.html',{'form': form})
     
 def new_pelicula(request):
     if not request.user.is_authenticated:
