@@ -27,3 +27,6 @@ class PeliculaForm(forms.ModelForm):
         class Meta:
             model = Pelicula
             fields = ('titulo','direccion','anio','genero','sinopsis','votos','imagen')
+
+class TitulosForm(forms.Form):
+	titulos = forms.ModelChoiceField(queryset = Pelicula.objects.all())

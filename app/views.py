@@ -19,6 +19,7 @@ from app.forms import PeliculaForm
 from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpRequest
+from app.forms import TitulosForm
 
 def home(request):
     """Renders the home page."""
@@ -122,9 +123,47 @@ def generos(request):
     return render(request, 'app/genero.html')
     
 def voto(request):
+    if not request.user.is_authenticated:
+        return render(request, 'app/index.html')
+
+    if request.method == "GET":
+        form = TitulosForm()
+        return render(request, 'app/voto.html',{'form': form})
+
+    if request.method == "POST":
+        error_already_voted = False
+        voted = False
+        form = TitulosForm(request.POST)
+
+        if form.is_valid():
+            user = request.user.id
+            selectedFilm = form.cleaned_data['titulos']
+
+            if Critico.objects.filter(usuario_id_id=user).exists():
+                critico = Critico.objects.get(usuario_id_id=user)
+                if Critico.objects.filter(id=critico.id, favoritas__id=selectedFilm.id):
+                    error_already_voted = True
+                    return render(request, 'app/voto.html', {'form': form, 'error': error_already_voted})
+                else:
+                    selectedFilm.votos += 1
+                    selectedFilm.save()
+                    critico.save()
+                    critico.favoritas.add(selectedFilm)    
+                    voted = True
+                    return render(request, 'app/voto.html', {'form': form, 'votado': selectedFilm.titulo, 'votadoB': voted})
+
+            else:
+                selectedFilm.votos += 1
+                selectedFilm.save()
+                critico = Critico(usuario_id=request.user)
+                critico.save()
+                critico.favoritas.add(selectedFilm)
+                voted = True
+                return render(request, 'app/voto.html', {'form': form, 'votado': selectedFilm.titulo, 'votadoB': voted})
+               
+
     return render(request, 'app/voto.html')
     
-
 def new_pelicula(request):
     if not request.user.is_authenticated:
         return render(request, 'app/index.html')
@@ -143,7 +182,11 @@ def new_pelicula(request):
             genero = request.POST['genero']
             sinopsis = request.POST['sinopsis']
             votos = request.POST['votos']
-            imagen = request.FILES['imagen']
+            if len(request.FILES) != 0:
+                imagen = request.FILES['imagen']
+            else:
+                imagen = "images/no_image.png"
+
             pelicula, created = Pelicula.objects.get_or_create(titulo=titulo, direccion=direccion, anio=anio, 
                                                                genero=genero, sinopsis=sinopsis, votos=votos, imagen=imagen)
             if created:
