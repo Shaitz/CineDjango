@@ -1,0 +1,17 @@
+{% extends "app/layout.html" %}
+
+{% block title %} Votar {% endblock %}
+
+{% block content %}
+
+<h1>Vota a la mejor pelicula</h1>
+<h2>Formulario</h2> <br />
+<form method="post"> {% csrf_token %}
+	Crear un select con los titulos de la pelicula <p></p>
+	Crear un submit para enviar la pelicula seleccionada <br />
+</form> 
+
+<p><h2>Resultado de la votacion</h2></p>
+<p>Indicar el resultado de la votacion: has votado a la peli ...</p>
+<p> O bien, indicar que dicho usuario ya ha votado a dicha pelicula </p>
+{% endblock %}

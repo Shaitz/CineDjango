@@ -1,0 +1,31 @@
+{% extends "app/layout.html" %}
+
+{% block title %} Favotitas {% endblock %}
+
+{% block content %}
+<h1>Favoritas</h1>
+<form method="post"> {% csrf_token %}
+        <select id="titulo" name="titulo">
+        {% for peli in pelis %}
+          <option value="{{ peli.titulo }}">{{ peli.titulo }}</option>
+        {% endfor %}
+        </select> <br/> <br/>
+        <input type="submit" value="Ver a quien le gusta"/>
+</form>
+
+{% if mostrar %}
+<br/>
+<b>{{ titulo }}:</b><br/>
+<table border="1" class="table">
+        <tr><td><b>Fans</b></td>
+        {% for critico in criticos_lista %}
+                <tr>
+                        <td>{{ critico.usuario_id.username }}</td>
+                </tr>
+        {% endfor %}
+
+</table><br/>
+
+{% endif %}
+
+{% endblock %}

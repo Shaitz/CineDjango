@@ -1,0 +1,43 @@
+{% extends "app/layout.html"%}
+{% block content %}
+
+<h1>Listado de Peliculas</h1>
+<table border='1' class="table">
+	<tr><td><b>Titulo</b></td><td><b>Director</b></td><td><b>Anio</b></td><td><b>Genero</b></td><td><b>Sipnosis</b></td><td><b>Votos</b></td></tr>
+	{% for filma in pelis %}
+	<tr>
+		<td>{{ filma.titulo }}</td>
+		<td>{{ filma.direccion }}</td>
+		<td>{{ filma.anio }}</td>
+		<td>{{ filma.genero }}</td>
+		<td>{{ filma.sinopsis }}</td>
+		<td>{{ filma.votos }}</td>
+	</tr>
+	{% endfor %}
+
+</table>
+<br />
+{% if pelis.has_other_pages %}
+<div class="pagination">
+	<span class="step-links">
+		{% if pelis.has_previous %}
+		<a href="?page={{ pelis.previous_page_number }}">previous</a>
+		{% endif %}
+
+		<span class="current">
+			Page {{ pelis.number }} of {{ pelis.paginator.num_pages }}.
+		</span>
+
+		{% if pelis.has_next %}
+		<a href="?page={{ pelis.next_page_number }}">next</a>
+		{% endif %}
+	</span>
+</div>
+<br />
+{% endif %}
+{% if request.user.is_superuser %}
+<li><a href="{% url 'new_pelicula' %}">Insertar Pelicula</a></li>
+{% endif %}
+<li><a href="{% url 'voto' %}">Votar pelicula</a></li>
+<li><a href="{% url 'generos' %}">Ver Generos de Peliculas</a></li>
+{% endblock %}

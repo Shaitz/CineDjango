@@ -1,0 +1,19 @@
+﻿{% extends "app/layout.html" %}
+{% block content %}
+
+<h2>{{ title }}</h2>
+<h3>{{ message }}</h3>
+
+<h1>Insertar una pelicula</h1>
+<form method="post">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <input type="submit" value="Insertar Pelicula">
+    {% if error  %}
+    <p style="color: red;">Una pelicula con esos datos ya existe</p>
+    {% endif %}<br />
+</form>
+
+{% endblock %}
