@@ -5,7 +5,7 @@
 <h3>{{ message }}</h3>
 
 <h1>Insertar una pelicula</h1>
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <table>
         {{ form.as_table }}

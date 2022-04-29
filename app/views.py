@@ -135,7 +135,7 @@ def new_pelicula(request):
 
     if request.method == "POST":
         error = False
-        form = PeliculaForm(request.POST)
+        form = PeliculaForm(request.POST, request.FILES)
         if form.is_valid():
             titulo = request.POST['titulo']
             direccion = request.POST['direccion']
@@ -143,7 +143,7 @@ def new_pelicula(request):
             genero = request.POST['genero']
             sinopsis = request.POST['sinopsis']
             votos = request.POST['votos']
-            imagen = request.FILES
+            imagen = request.FILES['imagen']
             pelicula, created = Pelicula.objects.get_or_create(titulo=titulo, direccion=direccion, anio=anio, 
                                                                genero=genero, sinopsis=sinopsis, votos=votos, imagen=imagen)
             if created:

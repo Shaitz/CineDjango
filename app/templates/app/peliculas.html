@@ -3,7 +3,7 @@
 
 <h1>Listado de Peliculas</h1>
 <table border='1' class="table">
-	<tr><td><b>Titulo</b></td><td><b>Director</b></td><td><b>Anio</b></td><td><b>Genero</b></td><td><b>Sipnosis</b></td><td><b>Votos</b></td></tr>
+	<tr><td><b>Titulo</b></td><td><b>Director</b></td><td><b>Anio</b></td><td><b>Genero</b></td><td><b>Sipnosis</b></td><td><b>Votos</b></td><td><b>Imagen</b></td></tr>
 	{% for filma in pelis %}
 	<tr>
 		<td>{{ filma.titulo }}</td>
@@ -12,6 +12,8 @@
 		<td>{{ filma.genero }}</td>
 		<td>{{ filma.sinopsis }}</td>
 		<td>{{ filma.votos }}</td>
+		<td><img src="{{ filma.imagen.url }}" width="90"/></td>
+
 	</tr>
 	{% endfor %}
 
