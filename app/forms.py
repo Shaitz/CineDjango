@@ -26,4 +26,4 @@ class RegistroForm(forms.Form): #Formulario de registro de usuarios
 class PeliculaForm(forms.ModelForm):
         class Meta:
             model = Pelicula
-            fields = ('titulo','direccion','anio','genero','sinopsis','votos')
+            fields = ('titulo','direccion','anio','genero','sinopsis','votos','imagen')

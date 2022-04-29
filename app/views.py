@@ -143,8 +143,9 @@ def new_pelicula(request):
             genero = request.POST['genero']
             sinopsis = request.POST['sinopsis']
             votos = request.POST['votos']
+            imagen = request.FILES
             pelicula, created = Pelicula.objects.get_or_create(titulo=titulo, direccion=direccion, anio=anio, 
-                                                               genero=genero, sinopsis=sinopsis, votos=votos)
+                                                               genero=genero, sinopsis=sinopsis, votos=votos, imagen=imagen)
             if created:
                 return HttpResponseRedirect('../peliculas')
             else:
