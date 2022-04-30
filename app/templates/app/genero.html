@@ -9,33 +9,31 @@
 <h3>Formulario</h3>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <!--<select name="generos">
-        {% for genero in generos%}
-        <option value="{{genero}}"></option>
-        {% endfor %}
-    </select>-->
     <table>
         {{form.as_table}}
     </table>
     <input type="submit" value="Ver Peliculas">
+
+    {% if searched %}
+    <h3>Listado de las peliculas del genero seleccionado</h3>
+    <p>
+        <table border='1' class="table">
+            <tr><td><b>Titulo</b></td><td><b>Director</b></td><td><b>Anio</b></td><td><b>Genero</b></td><td><b>Sipnosis</b></td><td><b>Votos</b></td><td><b>Imagen</b></td></tr>
+            {% for filma in pelis %}
+            <tr>
+                <td>{{ filma.titulo }}</td>
+                <td>{{ filma.direccion }}</td>
+                <td>{{ filma.anio }}</td>
+                <td>{{ filma.genero }}</td>
+                <td>{{ filma.sinopsis }}</td>
+                <td>{{ filma.votos }}</td>
+                <td><img src="{{ filma.imagen.url }}" width="90" /></td>
+
+            </tr>
+            {% endfor %}
+
+        </table>
+    </p>
+    {% endif %}
 </form>
-<h3>Listado de las peliculas del genero seleccionado</h3>
-<p>
-    <table border='1' class="table">
-        <tr><td><b>Titulo</b></td><td><b>Director</b></td><td><b>Anio</b></td><td><b>Genero</b></td><td><b>Sipnosis</b></td><td><b>Votos</b></td><td><b>Imagen</b></td></tr>
-        {% for filma in pelis %}
-        <tr>
-            <td>{{ filma.titulo }}</td>
-            <td>{{ filma.direccion }}</td>
-            <td>{{ filma.anio }}</td>
-            <td>{{ filma.genero }}</td>
-            <td>{{ filma.sinopsis }}</td>
-            <td>{{ filma.votos }}</td>
-            <td><img src="{{ filma.imagen.url }}" width="90" /></td>
-
-        </tr>
-        {% endfor %}
-
-    </table>
-</p>
 {% endblock %}

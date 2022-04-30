@@ -124,14 +124,14 @@ def generos(request):
     if not request.user.is_authenticated:
         return render(request, 'app/index.html')
 
-    generos = Genero.objects.all()
     form = GenerosForm()
+    searched = False
 
     if request.method == "POST":
-
+        searched = True
         genre = request.POST['generos']
         pelis = Pelicula.objects.filter(genero=genre).order_by('-votos')
-        return render(request, 'app/genero.html',{'form':form, 'pelis':pelis, 'generos': generos})
+        return render(request, 'app/genero.html',{'form':form, 'pelis':pelis, 'generos': generos, 'searched':searched})
 
     return render(request, 'app/genero.html',{'form':form,'generos': generos})
     
