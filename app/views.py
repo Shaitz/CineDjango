@@ -183,7 +183,18 @@ def new_pelicula(request):
     if request.method == "GET":
         form = PeliculaForm()
         return render(request, 'app/new_pelicula.html',{'form': form})
-
+    """
+    if request.is_ajax():
+        if request.method == "POST":
+            form = PeliculaForm(data=request.POST)
+            if form.is_valid():
+                post = form.save()
+                response_data = {}
+                response_data['respuesta'] = "Correcto!"
+                return HttpResponse(
+                json.dumps(response_data),
+                content_type="application/json")
+    """
     if request.method == "POST":
         error = False
         form = PeliculaForm(request.POST, request.FILES)

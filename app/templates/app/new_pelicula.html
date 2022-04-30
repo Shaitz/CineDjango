@@ -1,6 +1,28 @@
 ﻿{% extends "app/layout.html" %}
 {% block content %}
 
+<!--{% block javascript %}
+<script src="/static/app/scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $('#submitButton').click(function (e) {
+        e.preventDefault();
+        var formData = $("#post-form").serializeArray()
+        $.ajax({
+            type: 'POST',
+            url: '{% url "new_pelicula" %}',
+            data: formData,
+            success: function (json) {
+                document.getElementById("post-form").reset();
+                $('#titulo').val('askjhndkjhsadkjasdasd')
+            },
+            error: function (xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+    });
+</script>
+{% endblock %}-->
+
 <h2>{{ title }}</h2>
 <h3>{{ message }}</h3>
 
