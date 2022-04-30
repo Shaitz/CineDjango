@@ -3,7 +3,7 @@ Definition of forms.
 """
 
 from django import forms
-from app.models import Pelicula, Genero
+from app.models import Pelicula
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
@@ -30,6 +30,3 @@ class PeliculaForm(forms.ModelForm):
 
 class TitulosForm(forms.Form):
 	titulos = forms.ModelChoiceField(queryset = Pelicula.objects.all())
-
-class GenerosForm(forms.Form):
-    generos = forms.ModelChoiceField(queryset = Genero.objects.all())

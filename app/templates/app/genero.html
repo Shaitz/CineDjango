@@ -9,9 +9,11 @@
 <h3>Formulario</h3>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <table>
-        {{form.as_table}}
-    </table>
+    <select name="generos">
+        {% for genero in generos %}
+            <option id="{{genero}}">{{genero}}</option>
+        {% endfor %}
+    </select>
     <input type="submit" value="Ver Peliculas">
 
     {% if searched %}
