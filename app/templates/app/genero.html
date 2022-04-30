@@ -8,12 +8,15 @@
 <p></p>
 <h3>Formulario</h3>
 <form method="post" enctype="multipart/form-data">
-    <p>
-        {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
-    </p>
+    {% csrf_token %}
+    <!--<select name="generos">
+        {% for genero in generos%}
+        <option value="{{genero}}"></option>
+        {% endfor %}
+    </select>-->
+    <table>
+        {{form.as_table}}
+    </table>
     <input type="submit" value="Ver Peliculas">
 </form>
 <h3>Listado de las peliculas del genero seleccionado</h3>

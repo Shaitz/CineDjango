@@ -6,11 +6,17 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 
+class Genero(models.Model):
+	genero = models.CharField(max_length=60)
+
+	def __str__(self):
+		return self.genero
+
 class Pelicula(models.Model):
 	titulo = models.CharField(max_length=100)
 	direccion = models.CharField(max_length=60)
 	anio = models.IntegerField(validators=[MaxValueValidator(99999999999)])
-	genero = models.CharField(max_length=60)
+	genero = models.ForeignKey(Genero, on_delete=models.SET_NULL, null=True)
 	sinopsis = models.CharField(max_length=700)
 	votos = models.IntegerField(validators=[MaxValueValidator(99999999999)])
 	imagen = models.ImageField(upload_to = "images/", blank=True, null=True)

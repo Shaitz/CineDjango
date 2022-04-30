@@ -1,7 +1,7 @@
 """
 Definition of views.
 """
-from app.models import Pelicula, Critico
+from app.models import Pelicula, Critico, Genero
 from django.http import HttpRequest
 from datetime import datetime
 from django.template import RequestContext
@@ -124,19 +124,16 @@ def generos(request):
     if not request.user.is_authenticated:
         return render(request, 'app/index.html')
 
-    if request.method == "GET":
-        form = GenerosForm()
-        return render(request, 'app/genero.html',{'form': form})
+    generos = Genero.objects.all()
+    form = GenerosForm()
 
     if request.method == "POST":
-        form = GenerosForm(request.POST)  
 
-        if form.is_valid():
-            genre = form.cleaned_data['generos']
-            pelis = Pelicula.objects.get(genero=genre).order_by('-votos')
-            return render(request, 'app/genero.html',{'form': form}, {'pelis':pelis})
+        genre = request.POST['generos']
+        pelis = Pelicula.objects.filter(genero=genre).order_by('-votos')
+        return render(request, 'app/genero.html',{'form':form, 'pelis':pelis, 'generos': generos})
 
-        return render(request, 'app/genero.html',{'form': form})
+    return render(request, 'app/genero.html',{'form':form,'generos': generos})
     
 def voto(request):
     if not request.user.is_authenticated:
@@ -194,7 +191,7 @@ def new_pelicula(request):
             titulo = request.POST['titulo']
             direccion = request.POST['direccion']
             anio = request.POST['anio']
-            genero = request.POST['genero']
+            genero = Genero(request.POST['genero'])
             sinopsis = request.POST['sinopsis']
             votos = request.POST['votos']
             if len(request.FILES) != 0:
