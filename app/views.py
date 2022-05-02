@@ -1,6 +1,7 @@
 """
 Definition of views.
 """
+from django.http.response import JsonResponse
 from app.models import Pelicula, Critico, Genero
 from django.http import HttpRequest
 from datetime import datetime
@@ -180,23 +181,12 @@ def new_pelicula(request):
     if not request.user.is_authenticated:
         return render(request, 'app/index.html')
 
+    form = PeliculaForm()
+
     if request.method == "GET":
-        form = PeliculaForm()
         return render(request, 'app/new_pelicula.html',{'form': form})
-    """
-    if request.is_ajax():
-        if request.method == "POST":
-            form = PeliculaForm(data=request.POST)
-            if form.is_valid():
-                post = form.save()
-                response_data = {}
-                response_data['respuesta'] = "Correcto!"
-                return HttpResponse(
-                json.dumps(response_data),
-                content_type="application/json")
-    """
+
     if request.method == "POST":
-        error = False
         form = PeliculaForm(request.POST, request.FILES)
         if form.is_valid():
             titulo = request.POST['titulo']
@@ -213,9 +203,9 @@ def new_pelicula(request):
             pelicula, created = Pelicula.objects.get_or_create(titulo=titulo, direccion=direccion, anio=anio, 
                                                                genero=genero, sinopsis=sinopsis, votos=votos, imagen=imagen)
             if created:
-                return HttpResponseRedirect('../peliculas')
+                return JsonResponse({'success': True})
             else:
-                error = True
-                return render(request, 'app/new_pelicula.html', {'form': form, 'error': error}) 
+                return JsonResponse({'error': form.errors})
         else:
-            return render(request, 'app/new_pelicula.html', {'form': form})
+            return JsonResponse({'error': True, 'message': 'Error'})
+    return render(request, 'app/new_pelicula.html', {'form': form})

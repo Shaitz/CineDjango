@@ -1,41 +1,52 @@
 ﻿{% extends "app/layout.html" %}
 {% block content %}
 
-<!--{% block javascript %}
+{% block javascript %}
 <script src="/static/app/scripts/jquery-1.10.2.min.js"></script>
-<script>
-    $('#submitButton').click(function (e) {
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#feedbackform').submit(function (e) {
         e.preventDefault();
-        var formData = $("#post-form").serializeArray()
+        var form = $(this)
+        var formData = new FormData(this);
         $.ajax({
             type: 'POST',
-            url: '{% url "new_pelicula" %}',
+            url: form.attr('action'),
             data: formData,
-            success: function (json) {
-                document.getElementById("post-form").reset();
-                $('#titulo').val('askjhndkjhsadkjasdasd')
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                document.getElementById("feedbackform").reset();
+                if (response['success'])
+                {
+                    $('#feedbackmessage').html('<p style="color:green;">La pelicula ha sido insertada correctamente!</p>')
+                }
+                if (response['error'])
+                {
+                    $('#feedbackmessage').html('<p style="color:red;">Ha surgido un error al insertar la pelicula.</p>')
+                }
             },
             error: function (xhr, errmsg, err) {
                 console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
             }
         });
     });
+})
 </script>
-{% endblock %}-->
+{% endblock %}
 
 <h2>{{ title }}</h2>
 <h3>{{ message }}</h3>
 
 <h1>Insertar una pelicula</h1>
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" id="feedbackform">
     {% csrf_token %}
     <table>
         {{ form.as_table }}
     </table>
     <input type="submit" value="Insertar Pelicula">
-    {% if error  %}
-    <p style="color: red;">Una pelicula con esos datos ya existe</p>
-    {% endif %}<br />
+    <div id="feedbackmessage"</div>
 </form>
 
 {% endblock %}
